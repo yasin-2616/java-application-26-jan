@@ -1,7 +1,6 @@
 public class helloworld {
-    // ANSI color codes (may work on modern terminals)
     private static final String RESET = "\u001B[0m";
-    private static final String ORANGE = "\u001B[33m"; // saffron-like
+    private static final String ORANGE = "\u001B[33m";
     private static final String WHITE = "\u001B[37m";
     private static final String GREEN = "\u001B[32m";
     private static final String BLUE = "\u001B[34m";
@@ -14,7 +13,6 @@ public class helloworld {
     private static void printFlag() {
         String block = "████████████████████████████████████";
         System.out.println(ORANGE + block + RESET);
-        // White stripe with an Ashoka Chakra-like symbol in blue
         String left = "████████";
         String right = "████████";
         System.out.println(WHITE + left + RESET + "  " + BLUE + "☸" + RESET + "  " + WHITE + right + RESET);
@@ -26,21 +24,34 @@ public class helloworld {
 
     private static void showMenu() {
         java.util.Scanner sc = new java.util.Scanner(System.in);
-        while (true) {
-            System.out.println();
-            System.out.println("Options:\n  1) Show details\n  2) Exit");
-            System.out.print("Enter choice (1-2): ");
-            String choice = sc.nextLine().trim();
-            if (choice.equals("1")) {
-                printDetails();
-            } else if (choice.equals("2") || choice.equalsIgnoreCase("q")) {
-                System.out.println("Goodbye!");
-                break;
-            } else {
-                System.out.println("Invalid choice. Try again.");
+
+        try {
+            while (true) {
+                System.out.println();
+                System.out.println("Options:\n  1) Show details\n  2) Exit");
+                System.out.print("Enter choice (1-2): ");
+
+                if (!sc.hasNextLine()) {
+                    // Jenkins case (no input)
+                    System.out.println("\nNo input detected → Auto running...");
+                    printDetails();
+                    break;
+                }
+
+                String choice = sc.nextLine().trim();
+
+                if (choice.equals("1")) {
+                    printDetails();
+                } else if (choice.equals("2") || choice.equalsIgnoreCase("q")) {
+                    System.out.println("Goodbye!");
+                    break;
+                } else {
+                    System.out.println("Invalid choice. Try again.");
+                }
             }
+        } finally {
+            sc.close();
         }
-        sc.close();
     }
 
     private static void printDetails() {
